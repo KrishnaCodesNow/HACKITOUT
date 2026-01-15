@@ -1,37 +1,31 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 
-// Middleware to parse JSON bodies (for when you build the "Booking" feature)
 app.use(express.json());
 
-// 1. SERVE STATIC FILES (The Frontend)
-// This tells Node to serve index.html, style.css, etc. from the 'public' folder
-app.use(express.static(path.join(__dirname, 'public')));
+// Resolve the client directory path
+const clientPath = path.resolve(__dirname, '..', 'client');
+console.log('Serving static files from:', clientPath);
 
-// 2. THE API (The Data)
-// Load your data from the JSON file
-const servicesData = require('./data/services.json'); 
+// Serve static client folder
+app.use(express.static(clientPath));
 
-// Endpoint: Get All Services
+// Explicit route for root to serve index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(clientPath, 'index.html'));
+});
+
+// Load services data
+const servicesData = require('../client/data/services.json');
+
+// API endpoint
 app.get('/api/services', (req, res) => {
     res.json(servicesData);
 });
 
-// Endpoint: Toggle Availability (For the Dashboard)
-// In a real app, this updates the DB. Here, we update the variable in memory.
-app.post('/api/status', (req, res) => {
-    const { name, status } = req.body;
-    const service = servicesData.find(s => s.name === name);
-    if (service) {
-        service.availability = status;
-        res.json({ success: true, newStatus: status });
-    } else {
-        res.status(404).json({ success: false });
-    }
-});
-
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
