@@ -1,0 +1,12 @@
+.container { max-width: 900px; margin: auto; padding: 20px; }
+.task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+
+/* Status Button */
+#toggleBtn { padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; }
+.online { background-color: #28a745; color: white; }
+.offline { background-color: #dc3545; color: white; }
+
+/* Task Cards */
+.task-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: white; }
+.emergency-zone { background: #fff5f5; border: 2px solid #ff4d4d; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+.emergency-zone h3 { color: #d63031; }

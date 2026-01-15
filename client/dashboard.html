@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <h2>Worker Panel</h2>
+            <div class="status-toggle">
+                <span>Status: </span>
+                <button id="toggleBtn" class="online">Online</button>
+            </div>
+        </nav>
+
+        <section class="emergency-zone">
+            <h3>🚨 Emergency Tasks (Extra Pay)</h3>
+            <div id="emergencyList" class="task-grid">
+                </div>
+        </section>
+
+        <section class="regular-tasks">
+            <h3>Standard Tasks</h3>
+            <div id="taskList" class="task-grid">
+                </div>
+        </section>
+    </div>
+    <script src="script/script.js"></script>
+</body>
+</html>
