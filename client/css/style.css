@@ -1,12 +1,45 @@
-.container { max-width: 900px; margin: auto; padding: 20px; }
-.task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+:root {
+    --primary: #007bff;
+    --success: #28a745;
+    --danger: #dc3545;
+    --bg: #f8f9fa;
+}
 
-/* Status Button */
-#toggleBtn { padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; }
-.online { background-color: #28a745; color: white; }
-.offline { background-color: #dc3545; color: white; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: #333; padding: 20px; }
+.container { max-width: 1000px; margin: auto; }
 
-/* Task Cards */
-.task-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: white; }
-.emergency-zone { background: #fff5f5; border: 2px solid #ff4d4d; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-.emergency-zone h3 { color: #d63031; }
+/* Dashboard Header */
+.dashboard-header { 
+    display: flex; justify-content: space-between; align-items: center; 
+    background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.wallet-display { font-size: 1.2rem; font-weight: bold; color: var(--success); margin-top: 5px; }
+
+/* Task Grids */
+.task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+
+/* Modern Cards */
+.task-card { 
+    background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: transform 0.2s;
+}
+.task-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.price-tag { font-weight: bold; color: #333; }
+
+/* Emergency Zone Styling */
+.emergency-zone { 
+    background: #fff5f5; border: 2px dashed var(--danger); 
+    padding: 25px; border-radius: 15px; margin-bottom: 40px; 
+}
+.bonus-badge { background: var(--danger); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
+
+/* Buttons */
+#toggleBtn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+.online { background: var(--success); color: white; }
+.offline { background: var(--danger); color: white; }
+.task-card button { 
+    width: 100%; margin-top: 15px; padding: 10px; border-radius: 6px; 
+    border: none; background: var(--primary); color: white; font-weight: bold; cursor: pointer;
+}

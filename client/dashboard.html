@@ -8,8 +8,13 @@
 </head>
 <body>
     <div class="container">
-        <nav>
-            <h2>Worker Panel</h2>
+        <nav class="dashboard-header">
+            <div class="user-info">
+                <h2>Worker Panel</h2>
+                <div class="wallet-display">
+                    💰 My Earnings: <span id="totalEarnings">₹0</span>
+                </div>
+            </div>
             <div class="status-toggle">
                 <span>Status: </span>
                 <button id="toggleBtn" class="online">Online</button>
@@ -17,7 +22,10 @@
         </nav>
 
         <section class="emergency-zone">
-            <h3>🚨 Emergency Tasks (Extra Pay)</h3>
+            <div class="section-header">
+                <h3>🚨 Emergency Tasks (Extra Pay)</h3>
+                <span class="bonus-badge">Double Rewards Enabled</span>
+            </div>
             <div id="emergencyList" class="task-grid">
                 </div>
         </section>
