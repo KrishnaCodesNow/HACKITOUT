@@ -1,31 +1,24 @@
 const express = require('express');
 const path = require('path');
+const routes = require('./routes'); // Import the routes file
+
 const app = express();
 const PORT = 5000;
 
+// Middleware to parse JSON bodies (Crucial for the POST request)
 app.use(express.json());
 
-// Resolve the client directory path
+// Resolve path to your client folder
 const clientPath = path.resolve(__dirname, '..', 'client');
 console.log('Serving static files from:', clientPath);
 
-// Serve static client folder
+// 1. SERVE STATIC FILES (CSS, JS, Images)
 app.use(express.static(clientPath));
 
-// Explicit route for root to serve index.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(clientPath, 'index.html'));
-});
+// 2. USE ROUTES
+app.use('/', routes);
 
-// Load services data
-const servicesData = require('../client/data/services.json');
-
-// API endpoint
-app.get('/api/services', (req, res) => {
-    res.json(servicesData);
-});
-
-// Start the server
+// Start Server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
