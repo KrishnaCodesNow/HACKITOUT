@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServiceHub — Premium Home Services Platform</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <div class="logo-icon">🏠</div>
+        ServiceHub
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link">Services</a>
+        <a href="#" class="nav-link">How It Works</a>
+        <a href="#" class="nav-link">About</a>
+        <a href="#" class="nav-link">Contact</a>
+        <button class="btn-primary">Get Started</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">✨ Trusted by 15,000+ Customers</div>
+      <h1>
+        <span class="hero-gradient-text">Premium</span> Home Services<br>At Your Doorstep
+      </h1>
+      <p>Connect with verified professionals for all your home service needs</p>
+      
+      <div class="hero-search">
+        <input type="text" id="heroSearch" placeholder="What service do you need?">
+        <button onclick="searchFromHero()">🔍 Search</button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-number">500+</div>
+          <div class="hero-stat-label">Service Providers</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-number">15k+</div>
+          <div class="hero-stat-label">Happy Customers</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-number">4.8★</div>
+          <div class="hero-stat-label">Average Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="categories-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Popular Services</div>
+        <h2 class="section-title">What Do You Need Help With?</h2>
+        <p class="section-description">Browse our most requested services and find the perfect professional for your needs</p>
+      </div>
+
+      <div class="categories-grid">
+        <div class="category-card" onclick="filterByCategory('Electrician')">
+          <span class="category-icon">⚡</span>
+          <div class="category-name">Electrician</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('Plumber')">
+          <span class="category-icon">🔧</span>
+          <div class="category-name">Plumber</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('Carpenter')">
+          <span class="category-icon">🪚</span>
+          <div class="category-name">Carpenter</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('Cleaner')">
+          <span class="category-icon">🧹</span>
+          <div class="category-name">Cleaner</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('Mechanic')">
+          <span class="category-icon">🔩</span>
+          <div class="category-name">Mechanic</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('Tutor')">
+          <span class="category-icon">📚</span>
+          <div class="category-name">Tutor</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="filters-section">
+    <div class="container">
+      <div class="filters-card">
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label class="filter-label">Search Services</label>
+            <input type="text" id="search" class="filter-input" placeholder="Search by name or location...">
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Category</label>
+            <select id="category" class="filter-select">
+              <option value="">All Categories</option>
+              <option>Electrician</option>
+              <option>Plumber</option>
+              <option>Tutor</option>
+              <option>Mechanic</option>
+              <option>Carpenter</option>
+              <option>Cleaner</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Availability</label>
+            <select id="availability" class="filter-select">
+              <option value="">All Status</option>
+              <option>Available</option>
+              <option>Busy</option>
+              <option>Offline</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Sort By</label>
+            <select id="sortBy" class="filter-select">
+              <option value="rating">Top Rated</option>
+              <option value="name">Name</option>
+              <option value="experience">Experience</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="loading" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Loading premium services...</p>
+  </div>
+
+  <section class="services-section">
+    <div class="container">
+      <div id="services" class="services-grid hidden"></div>
+    </div>
+  </section>
+
+  <div id="empty" class="empty-state hidden">
+    <div class="empty-state-icon">🔍</div>
+    <h3>No Services Found</h3>
+    <p>Try adjusting your filters or search terms to find what you're looking for</p>
+  </div>
+
+ <script src="/script/script.js"></script>
+
+</body>
+
+
