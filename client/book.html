@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Finder - Emergency & Local</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #2d3748;
+            --accent: #e53e3e; /* Red for Emergency */
+            --bg: #ffffff;
+            --bg-secondary: #f7fafc;
+            --border: #e2e8f0;
+            --text-main: #1a202c;
+            --text-sub: #718096;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- TOOLTIP STYLES (The Dialogue Box) --- */
+        [data-tooltip] {
+            position: relative;
+            cursor: help; /* Change cursor to question mark/help */
+        }
+
+        /* The Tooltip Text */
+        [data-tooltip]:after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%; /* Position above */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2d3748;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: pre-wrap; /* Allows wrapping */
+            width: max-content;
+            max-width: 250px;
+            text-align: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        /* The tiny arrow pointing down */
+        [data-tooltip]:before {
+            content: "";
+            position: absolute;
+            bottom: 115%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2d3748 transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        /* Show on Hover */
+        [data-tooltip]:hover:after,
+        [data-tooltip]:hover:before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- Main Layout --- */
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px 20px;
+        }
+
+        /* --- Filter Section --- */
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: nowrap;
+        }
+
+        .input-group {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #3182ce;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            outline: none;
+            min-width: 150px;
+        }
+
+        /* Emergency Toggle Button */
+        .bolt-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--text-sub);
+            white-space: nowrap;
+        }
+
+        .bolt-btn span.icon {
+            font-size: 1.2rem;
+        }
+
+        .bolt-btn.active {
+            background-color: #fff5f5;
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2);
+        }
+
+        /* --- List Area --- */
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px 15px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+        }
+
+        .list-header .col-name { width: 40%; }
+        .list-header .col-area { width: 30%; }
+        /* Changed to match new "Action" column */
+        .list-header .col-charge { width: 30%; text-align: right; }
+
+        .worker-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid transparent;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .worker-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: #e2e8f0;
+        }
+
+        .col-info { width: 40%; }
+        .col-loc { width: 30%; }
+        .col-price { 
+            width: 30%; 
+            text-align: right; 
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .worker-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .worker-meta {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .emergency-badge {
+            background-color: #fff5f5;
+            color: var(--accent);
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            border: 1px solid #feb2b2;
+        }
+
+        /* NEW BUTTON STYLE */
+        .book-action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .book-action-btn:hover {
+            background-color: #1a202c;
+            transform: scale(1.02);
+        }
+
+        /* --- Responsive Breakpoints --- */
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+
+            .bolt-btn {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .list-header { display: none; }
+
+            .worker-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .col-info, .col-loc, .col-price {
+                width: 100%;
+                text-align: left;
+            }
+            
+            .col-price {
+                color: #2b6cb0;
+                text-align: left; /* Align button left on mobile */
+            }
+
+            /* Adjust tooltip position for mobile to not go off screen */
+            [data-tooltip]:after {
+                left: 0;
+                transform: translateX(0);
+                width: 200px;
+                text-align: left;
+            }
+            [data-tooltip]:before {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <div class="filter-section">
+            <div class="input-group">
+                <input type="text" id="areaInput" class="search-input" placeholder="Enter Area (e.g. Andheri)">
+            </div>
+
+            <select class="filter-select" id="serviceFilter">
+                <option value="all">All Services</option>
+            </select>
+
+            <select class="filter-select" id="sortFilter">
+                <option value="proximity">Sort: Nearest</option>
+                <option value="experience">Experience</option>
+                <option value="rating">Rating</option> 
+            </select>
+
+            <button 
+                class="bolt-btn" 
+                id="boltBtn" 
+                data-tooltip="Only for Urgent/Emergency repairs.&#10;Availability is not guaranteed."
+            >
+                <span class="icon">⚡</span>
+                <span class="text">Emergency</span>
+            </button>
+        </div>
+
+        <div class="list-header">
+            <div class="col-name">Worker / Service</div>
+            <div class="col-area">Location</div>
+            <div class="col-charge">Action</div>
+        </div>
+
+        <div id="resultsList"></div>
+
+    </div>
+
+    <script>
+        // --- 1. DATA CONTAINER ---
+        let servicesData = []; 
+
+        // --- 2. STATE ---
+        let state = {
+            areaQuery: '',
+            service: 'all',
+            sortBy: 'proximity',
+            emergencyOnly: false
+        };
+
+        // --- 3. DOM ELEMENTS ---
+        const resultsList = document.getElementById('resultsList');
+        const areaInput = document.getElementById('areaInput');
+        const serviceSelect = document.getElementById('serviceFilter');
+        const sortSelect = document.getElementById('sortFilter');
+        const boltBtn = document.getElementById('boltBtn');
+
+        // --- 4. INIT ---
+        async function init() {
+            await fetchServices();
+            populateServices();
+            renderList();
+            setupListeners();
+        }
+
+        // --- FETCH DATA ---
+        async function fetchServices() {
+            try {
+                const response = await fetch('data/services.json');
+                const rawData = await response.json();
+                
+                // Map JSON data to internal structure
+                // Generates a random distance since JSON doesn't have it
+                servicesData = rawData.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    service: item.category,  // Mapped from category
+                    area: item.location,     // Mapped from location
+                    experience: item.experience,
+                    rating: item.rating,
+                    // Parse "12 years" to 12 for sorting
+                    expValue: parseInt(item.experience) || 0,
+                    // Default to false as JSON lacks emergency data
+                    bolt: false, 
+                    // Random distance between 0.5 and 8.0 km
+                    distance: (Math.random() * 7.5 + 0.5).toFixed(1)
+                }));
+            } catch (error) {
+                console.error("Failed to load services:", error);
+                resultsList.innerHTML = `<div style="text-align:center; padding:40px;">Error loading data.</div>`;
+            }
+        }
+
+        // --- 5. LOGIC ---
+        function populateServices() {
+            const services = [...new Set(servicesData.map(item => item.service))];
+            services.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s;
+                opt.textContent = s;
+                serviceSelect.appendChild(opt);
+            });
+        }
+
+        function filterData() {
+            let data = servicesData.filter(item => {
+                if (state.areaQuery && !item.area.toLowerCase().includes(state.areaQuery.toLowerCase())) return false;
+                if (state.service !== 'all' && item.service !== state.service) return false;
+                if (state.emergencyOnly && !item.bolt) return false;
+                return true;
+            });
+
+            // Sorting 
+            data.sort((a, b) => {
+                // Price sorting removed from UI logic, replaced with Rating or Experience
+                if (state.sortBy === 'experience') return b.expValue - a.expValue;
+                if (state.sortBy === 'rating') return b.rating - a.rating;
+                // Default to proximity
+                return parseFloat(a.distance) - parseFloat(b.distance);
+            });
+
+            return data;
+        }
+
+        function renderList() {
+            const data = filterData();
+            resultsList.innerHTML = '';
+
+            if (data.length === 0) {
+                resultsList.innerHTML = `<div style="text-align:center; padding:40px; color:#a0aec0;">No services found. Try changing your filters.</div>`;
+                return;
+            }
+
+            data.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'worker-card';
+                
+                const badge = item.bolt ? `<span class="emergency-badge">URGENT ⚡</span>` : '';
+
+                el.innerHTML = `
+                    <div class="col-info">
+                        <div class="worker-name">
+                            ${item.name} ${badge}
+                        </div>
+                        <div class="worker-meta">
+                            ${item.service} • ${item.experience} • ${item.rating}★
+                        </div>
+                    </div>
+                    
+                    <div class="col-loc">
+                        <div style="font-weight:500;">${item.area}</div>
+                        <div style="font-size:0.85rem; color:#a0aec0;">${item.distance} km away</div>
+                    </div>
+                    
+                    <div class="col-price">
+                        <button class="book-action-btn" onclick="window.location.href='bform.htm?service=' + encodeURIComponent('${item.name}')">Book Now</button>
+                    </div>
+                `;
+                resultsList.appendChild(el);
+            });
+        }
+
+        // --- 6. LISTENERS ---
+        function setupListeners() {
+            areaInput.addEventListener('input', (e) => {
+                state.areaQuery = e.target.value.trim();
+                renderList();
+            });
+
+            serviceSelect.addEventListener('change', (e) => {
+                state.service = e.target.value;
+                renderList();
+            });
+
+            sortSelect.addEventListener('change', (e) => {
+                state.sortBy = e.target.value;
+                renderList();
+            });
+
+            boltBtn.addEventListener('click', () => {
+                state.emergencyOnly = !state.emergencyOnly;
+                boltBtn.classList.toggle('active');
+                renderList();
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>

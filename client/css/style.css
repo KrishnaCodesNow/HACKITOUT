@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .container { max-width: 900px; margin: auto; padding: 20px; }
 .task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
 
@@ -10,3 +11,222 @@
 .task-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: white; }
 .emergency-zone { background: #fff5f5; border: 2px solid #ff4d4d; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
 .emergency-zone h3 { color: #d63031; }
+=======
+/* --- 1. UNIVERSAL RESET & VARIABLES --- */
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --logo-color: #e11d48;
+    --text-main: #1e293b;
+    --text-sec: #64748b;
+    --card-w: 200px;
+    --card-h: 280px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    color: var(--text-main); 
+    line-height: 1.6; 
+    overflow-x: hidden; 
+    background-color: #f4f6f8; 
+    scroll-behavior: smooth; 
+}
+
+/* --- 2. NAVIGATION (Updated for specific shadow) --- */
+.navbar-pill {
+    /* Layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    
+    /* Shape & Position */
+    width: fit-content;    /* STRICTLY fits content */
+    max-width: 90%;
+    margin: 10px auto 0;
+    padding: 0.8rem 3rem;
+    border-radius: 100px;
+    background: white;
+    
+    /* Sticky Behavior */
+    position: sticky;
+    top: 10px;
+    z-index: 1000;
+    
+    /* SHADOW: Applied strictly to this pill element */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+}
+
+.nav-brand {
+    font-family: 'Clash Display', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--logo-color);
+    cursor: pointer;
+    letter-spacing: -0.5px;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    gap: 1.8rem;
+    align-items: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-sec);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+.btn-primary { 
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    padding: 0.8rem 1.5rem; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    font-weight: 600; 
+    transition: 0.3s;
+}
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+/* --- 3. LANDING HERO SECTION --- */
+.hero { 
+    min-height: 80vh; 
+    display: flex; 
+    align-items: center; 
+    padding: 1rem 8% 4rem 8%; 
+    background: radial-gradient(circle at top right, #f8faff, #ffffff); 
+}
+.hero-container { 
+    display: grid; 
+    grid-template-columns: 1.1fr 0.9fr; 
+    gap: 40px; 
+    width: 100%; 
+    max-width: 1300px; 
+    margin: 0 auto; 
+    align-items: center; 
+}
+.hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: #eef2ff;
+    color: var(--primary);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+.hero-content h1 { 
+    font-family: 'Clash Display'; 
+    font-size: 4rem; 
+    line-height: 1.1; 
+    margin-bottom: 1.2rem; 
+}
+.hero-gradient-text { 
+    background: linear-gradient(90deg, var(--primary), #a855f7); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+.hero-content p { font-size: 1.1rem; color: var(--text-sec); margin-bottom: 2rem; }
+.hero-stats { display: flex; gap: 3rem; border-top: 1px solid #e2e8f0; padding-top: 2rem; margin-top: 2rem; }
+.hero-stat-number { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+.hero-stat-label { font-size: 0.85rem; color: var(--text-sec); }
+.hero-visual { position: relative; height: 500px; display: flex; justify-content: center; align-items: center; }
+
+/* HERO CAROUSEL ANIMATIONS */
+.coverflow-wrapper { position: relative; width: 100%; height: 100%; perspective: 1200px; }
+.coverflow-stage { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
+.cf-card {
+    position: absolute; width: var(--card-w); height: var(--card-h); background: white; border-radius: 24px; padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; text-align: center;
+    transition: opacity 0.3s ease; 
+    will-change: transform, opacity;
+}
+.cf-avatar { width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 15px; }
+.cf-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 5px; }
+.cf-role { font-size: 0.85rem; color: var(--text-sec); }
+
+/* --- 4. SERVICE DISCOVERY SECTION --- */
+.discovery-section { 
+    height: 800px; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    position: relative; 
+    overflow: hidden; 
+    background: #f4f6f8;
+    padding: 50px 0;
+}
+.discovery-title { font-family: 'Clash Display'; font-size: 2.5rem; margin-bottom: 20px; }
+
+.carousel-container { 
+    position: relative; width: 100%; height: 600px; display: flex; justify-content: center; align-items: center; perspective: 1000px; 
+}
+
+.card {
+    position: absolute; 
+    width: 280px; 
+    height: 420px; 
+    cursor: pointer; 
+    top: 50%; 
+    left: 50%;
+    transform: translate(calc(-50% + var(--x-offset)), -50%) scale(var(--scale));
+    opacity: 0; 
+    z-index: 0; 
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+    will-change: transform, opacity;
+}
+
+.card-inner { 
+    width: 100%; height: 100%; background: white; border: 1px solid #e0e0e0; border-radius: 16px; 
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12); display: flex; flex-direction: column; overflow: hidden; 
+}
+.card-header { 
+    background: #fff; padding: 14px 16px; font-size: 10px; font-weight: 700; text-transform: uppercase; 
+    color: #999; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; 
+}
+.card-body { 
+    flex: 1; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; 
+    justify-content: center; padding: 20px; text-align: center;
+}
+.service-icon { font-size: 4rem; margin-bottom: 15px; }
+.service-title { color: #2d3748; font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; }
+.service-sub { color: #718096; font-size: 0.9rem; }
+
+.card-footer { padding: 16px; background: white; border-top: 1px solid #f0f0f0; }
+.book-btn { 
+    width: 100%; padding: 14px; border: none; background: #1a202c; color: #fff; 
+    font-weight: 700; border-radius: 8px; cursor: pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
+    transition: 0.3s;
+}
+.book-btn:hover { background: #2d3748; transform: translateY(-2px); }
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+    .navbar-pill {
+        flex-direction: column;
+        padding: 1rem 2rem;
+        gap: 1rem;
+        width: 90%;
+        margin-top: 10px;
+    }
+    .nav-left, .nav-right { gap: 1rem; font-size: 0.9rem; }
+    
+    .hero { padding-top: 2rem; }
+    .hero-container { grid-template-columns: 1fr; text-align: center; }
+    .hero-stats { justify-content: center; }
+    .hero-visual { height: 400px; }
+    .hero-content h1 { font-size: 2.8rem; }
+}
+>>>>>>> shubham

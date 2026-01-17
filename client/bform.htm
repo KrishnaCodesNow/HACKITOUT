@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Booking</title>
+    <style>
+        :root {
+            --primary: #2d3748;
+            --accent: #e53e3e;
+            --bg-secondary: #f7fafc;
+            --border: #e2e8f0;
+            --text-main: #1a202c;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 { margin-bottom: 20px; color: var(--primary); text-align: center; }
+
+        .form-group { margin-bottom: 15px; }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus { border-color: #3182ce; }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover { background-color: #1a202c; }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #718096;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Confirm Booking</h2>
+        
+        <form id="bookingForm" onsubmit="handleBooking(event)">
+            <div class="form-group">
+                <label>Service Selected</label>
+                <input type="text" id="serviceInput" readonly style="background-color: #edf2f7; font-weight:bold;">
+            </div>
+
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="name" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <textarea id="address" rows="3" placeholder="Flat No, Building, Area..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Preferred Date</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Confirm & Book</button>
+        </form>
+
+        <a href="book.html" class="back-link">← Back to Search</a>
+    </div>
+
+    <script>
+        // 1. Get the Service Name from the URL (passed from book.html)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const serviceName = urlParams.get('service');
+            
+            // 2. Put it into the input box
+            if (serviceName) {
+                document.getElementById('serviceInput').value = decodeURIComponent(serviceName);
+            } else {
+                document.getElementById('serviceInput').value = "General Inquiry";
+            }
+        };
+
+        // 3. Handle Form Submission (Fake for now)
+        function handleBooking(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('serviceInput').value;
+            
+            alert(`Thanks ${name}! Your booking for "${service}" has been received.`);
+            
+            // Redirect back to home or success page
+            window.location.href = 'index.html'; 
+        }
+    </script>
+
+</body>
+</html>
