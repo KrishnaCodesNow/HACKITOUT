@@ -62,72 +62,14 @@ This stack was chosen to enable fast prototyping, easy debugging, and smooth hac
 
 ---
 
-## ⚙️ System Architecture
+## ⚡ Installation & Run Guide
 
-The application follows a simple **client-server architecture**:
-* **Frontend:** Static HTML, CSS, and JavaScript files served by an Express server.
-* **Backend:** Handles routing and API requests.
-* **Database:** Service and worker data is stored and managed using JSON files for simplicity and speed.
+Follow these steps to set up and run the project locally on your machine.
 
----
+### Prerequisites
+Ensure you have **Node.js** installed.
 
-## 🚀 Core Features
-
-* **Hyperlocal Discovery:** Find services based on specific user area and category.
-* **Smart Filtering:** Sort by proximity, experience, and ratings.
-* **🚨 Emergency Toggle:** Urgent booking mode for critical services.
-* **Interactive UI:** Animated service carousel for better discoverability.
-* **Fast Booking:** Simple flow with minimal user input.
-* **Real-time Availability:** Workers can toggle online/offline status.
-* **Worker Dashboard:** Dedicated view to manage jobs and earnings.
-* **Responsive Design:** Fully functional on desktop and mobile devices.
-
----
-
-## 👤 User Roles
-
-### Consumers
-* Search for local services.
-* Book service providers.
-* Request emergency services.
-* View real-time availability of workers.
-
-### Service Providers (Workers)
-* Manage online/offline availability.
-* Receive regular and emergency job requests.
-* View assigned tasks.
-* Track earnings and work status.
-
----
-
-## 🔒 Security and Trust Design
-
-ServiceHub is built with user safety in mind. The platform emphasizes:
-* **Local Focus:** Prioritizing known local workers.
-* **Transparency:** Clear service information.
-* **Safety Features:** Planned features to protect users during in-home services.
-
----
-
-## 🗺️ Upcoming Features & Roadmap
-
-* [ ] **Advanced Worker Dashboard:** Monthly income charts, service history, and analytics.
-* [ ] **Real-time Alerts:** Notifications for nearby and emergency job requests.
-* [ ] **Reviews & Ratings:** Consumer feedback system for service providers.
-* [ ] **Smart Matching:** Priority matching based on distance and availability.
-* [ ] **Women-Safety Focus:** Secure option allowing female consumers to opt specifically for female service providers.
-* [ ] **Digital Payments:** Integrated wallet and payment gateway.
-* [ ] **Admin Panel:** For worker verification, moderation, and analytics.
-* [ ] **Push Notifications:** For bookings, status updates, and emergencies.
-
----
-
-## 🌟 Impact
-
-ServiceHub demonstrates a practical and scalable solution to a real-world problem. It supports local workers by increasing their visibility and income opportunities while providing residents with fast, safe, and reliable access to essential services.
-
----
-
-## 📄 License
-
-This project is created for hackathon and educational purposes.
+### Steps
+1. Navigate to the server directory:
+   ```bash
+   cd server
