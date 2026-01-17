@@ -142,14 +142,14 @@ function setActive(index) {
 let discoveryTimer = setInterval(() => {
     discoveryIndex = (discoveryIndex + 1) % discoveryCards.length;
     updateDiscovery();
-}, 5000);
+}, 2500);
 
 function resetDiscoveryAuto() {
     clearInterval(discoveryTimer);
     discoveryTimer = setInterval(() => {
         discoveryIndex = (discoveryIndex + 1) % discoveryCards.length;
         updateDiscovery();
-    }, 5000);
+    }, 2500);
 }
 
 // Initialize Discovery render
