@@ -4,16 +4,6 @@
 
 The platform prioritizes nearby availability, faster response times, and user safety, making it especially useful during urgent situations. Unlike large aggregator platforms, ServiceHub is designed with a **locality-first approach**, connecting users with nearby providers to reduce wait times and improve trust while empowering local workers.
 
----
-
-## 📹 Demo & Walkthrough
-
-**[Insert Demo Video Link Here]**
-
-### Screenshots
-*Place image or GIF links here to showcase the UI.*
-
----
 
 ## 👥 Team Members
 
