@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('./controller'); // Import the controller
+const controller = require('./controller');
 
-// --- HTML ROUTES ---
-router.get('/', controller.getLandingPage);
-router.get('/dashboard', controller.getDashboard);
+// --- HTML PAGE ROUTES ---
+router.get('/', controller.getLandingPage);          // Home
+router.get('/services', controller.getServicesPage); // Services List
+router.get('/book', controller.getBookPage);         // Booking/Emergency
 
-// --- API ROUTES ---
-router.get('/api/services', controller.getServices);
+// --- API DATA ROUTES ---
+router.get('/api/services', controller.getServicesAPI);
 router.post('/api/status', controller.updateStatus);
 
 module.exports = router;

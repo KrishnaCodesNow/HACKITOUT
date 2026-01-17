@@ -1,158 +1,156 @@
-let services = [];
+/* =========================================
+   SECTION 1: HERO CAROUSEL LOGIC
+   (Continuous "Train" Effect for Landing Page)
+   ========================================= */
 
-const serviceContainer = document.getElementById("services");
-const searchInput = document.getElementById("search");
-const heroSearchInput = document.getElementById("heroSearch");
-const categorySelect = document.getElementById("category");
-const availabilitySelect = document.getElementById("availability");
-const sortBySelect = document.getElementById("sortBy");
-const loadingDiv = document.getElementById("loading");
-const emptyDiv = document.getElementById("empty");
+const heroServices = [
+    { name: 'Electrician', desc: 'Wiring & Repairs', icon: '⚡' },
+    { name: 'Plumber', desc: 'Pipe & Leak Fixes', icon: '🔧' },
+    { name: 'Cleaning', desc: 'Full Deep Clean', icon: '🧹' },
+    { name: 'Painting', desc: 'Wall & Texture', icon: '🎨' },
+    { name: 'HVAC', desc: 'AC & Heating', icon: '❄️' }
+];
 
-function renderServices(list) {
-  serviceContainer.innerHTML = "";
+const heroContainer = document.getElementById('service-carousel');
 
-  if (list.length === 0) {
-    serviceContainer.classList.add("hidden");
-    emptyDiv.classList.remove("hidden");
-    return;
-  }
+// Build the HTML structure for Hero Cards
+heroContainer.innerHTML = `<div class="coverflow-wrapper"><div class="coverflow-stage"></div></div>`;
+const heroStage = heroContainer.querySelector('.coverflow-stage');
+const heroCards = [];
 
-  serviceContainer.classList.remove("hidden");
-  emptyDiv.classList.add("hidden");
-
-  list.forEach((service, index) => {
-    const card = document.createElement("div");
-    card.className = "service-card";
-    card.style.setProperty('--index', index);
-
-    const availabilityClass = service.availability.toLowerCase().replace(' ', '-');
-    const verifiedBadge = service.verified ? '<span class="verified-badge">✓ Verified Pro</span>' : '';
-    const buttonText = service.availability === 'Available' ? '📅 Book Now' : '👁️ View Profile';
-
+// Create Cards
+heroServices.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'cf-card';
+    const hue = [220, 280, 10, 160, 40][index % 5];
     card.innerHTML = `
-      <div class="card-image-wrapper">
-        <div class="card-image-pattern"></div>
-        <div class="card-image-icon">${service.icon}</div>
-        <div class="card-badge-top">${service.category}</div>
-      </div>
-      
-      <div class="card-content">
-        <div class="card-header">
-          <div>
-            <div class="card-title">${service.name}</div>
-            <div class="card-subtitle">${service.category} Specialist</div>
-          </div>
-          ${verifiedBadge}
-        </div>
-        
-        <div class="card-info-grid">
-          <div class="info-item">
-            <span class="info-icon">📍</span>
-            <span>${service.location}</span>
-          </div>
-          <div class="info-item">
-            <span class="info-icon">💼</span>
-            <span>${service.experience} experience</span>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <div class="rating-box">
-            <span class="rating-star">★</span>
-            <div>
-              <div class="rating-value">${service.rating}</div>
-              <div class="rating-reviews">${service.reviews} reviews</div>
-            </div>
-          </div>
-          <div class="status-badge status-${availabilityClass}">
-            <span class="status-dot"></span>
-            ${service.availability}
-          </div>
-        </div>
-
-        <button class="book-button" onclick="bookService('${service.name}', '${service.availability}')">
-          ${buttonText}
-        </button>
-      </div>
-    `;
-
-    serviceContainer.appendChild(card);
-  });
-}
-
-function filterServices() {
-  const search = searchInput.value.toLowerCase();
-  const category = categorySelect.value;
-  const availability = availabilitySelect.value;
-  const sortBy = sortBySelect.value;
-
-  let filtered = services.filter(service =>
-    (service.name.toLowerCase().includes(search) || 
-     service.category.toLowerCase().includes(search) ||
-     service.location.toLowerCase().includes(search)) &&
-    (category === "" || service.category === category) &&
-    (availability === "" || service.availability === availability)
-  );
-
-  if (sortBy === 'rating') {
-    filtered.sort((a, b) => b.rating - a.rating);
-  } else if (sortBy === 'name') {
-    filtered.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (sortBy === 'experience') {
-    filtered.sort((a, b) => parseInt(b.experience) - parseInt(a.experience));
-  }
-
-  renderServices(filtered);
-}
-
-function filterByCategory(cat) {
-  categorySelect.value = cat;
-  filterServices();
-  document.querySelector('.filters-section').scrollIntoView({ 
-    behavior: 'smooth', 
-    block: 'center' 
-  });
-}
-
-function searchFromHero() {
-  searchInput.value = heroSearchInput.value;
-  filterServices();
-  document.querySelector('.filters-section').scrollIntoView({ 
-    behavior: 'smooth',
-    block: 'start'
-  });
-}
-
-function bookService(serviceName, availability) {
-  if (availability === 'Available') {
-    alert(`🎉 Booking Request Sent!\n\n✓ Service: ${serviceName}\n✓ Confirmation call within 30 minutes\n✓ Professional will arrive at scheduled time\n\nThank you for choosing ServiceHub!`);
-  } else {
-    alert(`📋 ${serviceName}\n\nThis professional is currently ${availability.toLowerCase()}.\n\nWould you like to:\n• View their full profile\n• Schedule for later\n• Find similar professionals\n\nContact support for assistance.`);
-  }
-}
-
-// Initialize
-async function init() {
-  try {
-    const response = await fetch('/api/services');
-    services = await response.json();
-    loadingDiv.classList.add("hidden");
-    renderServices(services);
-  } catch (error) {
-    console.error('Error loading services:', error);
-    loadingDiv.classList.add("hidden");
-    emptyDiv.classList.remove("hidden");
-  }
-}
-
-init();
-
-// Event listeners
-searchInput.addEventListener("input", filterServices);
-categorySelect.addEventListener("change", filterServices);
-availabilitySelect.addEventListener("change", filterServices);
-sortBySelect.addEventListener("change", filterServices);
-heroSearchInput.addEventListener("keypress", function(e) {
-  if (e.key === 'Enter') searchFromHero();
+        <div class="cf-avatar" style="color:hsl(${hue},70%,50%);background:hsl(${hue},70%,96%);">${item.icon}</div>
+        <h3 class="cf-name">${item.name}</h3>
+        <p class="cf-role">${item.desc}</p>`;
+    
+    // Pause on click or hover interaction
+    card.addEventListener('mouseenter', () => isHeroPaused = true);
+    card.addEventListener('mouseleave', () => isHeroPaused = false);
+    
+    heroStage.appendChild(card);
+    heroCards.push(card);
 });
+
+// Animation Variables for Hero
+let heroScrollPos = 0;
+let heroScrollSpeed = 0.006; // Slow smooth train speed
+let isHeroPaused = false;
+const HERO_SPACING = 120; // Distance between cards
+const TOTAL_HERO_CARDS = heroCards.length;
+
+function animateHero() {
+    if (!isHeroPaused) {
+        heroScrollPos += heroScrollSpeed;
+    }
+
+    if (heroScrollPos > TOTAL_HERO_CARDS) heroScrollPos -= TOTAL_HERO_CARDS;
+
+    heroCards.forEach((card, index) => {
+        let offset = index - heroScrollPos;
+        
+        // Wrap offset
+        offset = ((offset % TOTAL_HERO_CARDS) + TOTAL_HERO_CARDS) % TOTAL_HERO_CARDS;
+        if (offset > TOTAL_HERO_CARDS / 2) offset -= TOTAL_HERO_CARDS;
+
+        const absOffset = Math.abs(offset);
+        
+        // Style Logic:
+        const translateX = offset * HERO_SPACING;
+        const scale = 1 - (absOffset * 0.2);
+        const opacity = Math.max(0, 1 - (absOffset * 0.4));
+        const zIndex = 100 - Math.round(absOffset * 10);
+        
+        // Apply Styles
+        card.style.transform = `translateX(${translateX}px) scale(${Math.max(0, scale)})`;
+        card.style.opacity = opacity;
+        card.style.zIndex = zIndex;
+        
+        // --- CHANGED: Border logic removed here ---
+        card.style.border = 'none'; 
+    });
+
+    requestAnimationFrame(animateHero);
+}
+
+// Start Hero Animation
+animateHero();
+
+
+
+/* =========================================
+   SECTION 2: DISCOVERY CAROUSEL LOGIC
+   (Original "Snap" Effect - Discrete Steps)
+   ========================================= */
+
+const discoveryCards = document.querySelectorAll('#discovery-container .card');
+let discoveryIndex = 0;
+const DISCOVERY_SPACING = 340;
+
+function updateDiscovery() {
+    const total = discoveryCards.length;
+    discoveryCards.forEach((card, index) => {
+        let offset = (index - discoveryIndex) % total;
+        if (offset < 0) offset += total;
+        if (offset > total / 2) offset -= total;
+
+        // Detect wrapping to prevent "flying across screen"
+        const lastOffset = parseFloat(card.dataset.lastOffset || 0);
+        const isWrapping = Math.abs(offset - lastOffset) > 2;
+
+        if (isWrapping) {
+            card.style.transition = 'none';
+            card.style.opacity = '0';
+        } else {
+            // Restore transition for the snap effect
+            card.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease';
+        }
+
+        const absOffset = Math.abs(offset);
+        const scale = offset === 0 ? 1 : Math.pow(0.85, absOffset);
+        const opacity = offset === 0 ? 1 : 0.6;
+        
+        card.style.setProperty('--x-offset', `${offset * DISCOVERY_SPACING}px`);
+        card.style.setProperty('--scale', scale);
+        card.style.zIndex = 100 - absOffset;
+        
+        if (!isWrapping) {
+            card.style.opacity = opacity;
+        } else {
+            // Force reflow
+            void card.offsetWidth;
+            setTimeout(() => {
+                card.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease';
+                card.style.opacity = opacity;
+            }, 50);
+        }
+        card.dataset.lastOffset = offset;
+    });
+}
+
+function setActive(index) {
+    discoveryIndex = index;
+    updateDiscovery();
+    resetDiscoveryAuto();
+}
+
+// Auto-advance every 5 seconds (Discrete Step)
+let discoveryTimer = setInterval(() => {
+    discoveryIndex = (discoveryIndex + 1) % discoveryCards.length;
+    updateDiscovery();
+}, 5000);
+
+function resetDiscoveryAuto() {
+    clearInterval(discoveryTimer);
+    discoveryTimer = setInterval(() => {
+        discoveryIndex = (discoveryIndex + 1) % discoveryCards.length;
+        updateDiscovery();
+    }, 5000);
+}
+
+// Initialize Discovery render
+updateDiscovery();
